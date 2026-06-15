@@ -24,3 +24,38 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* ---- A4 print setup ---------------------------------------------------- */
+/* Lock the printed sheet to A4 and strip the browser's default margins so
+   the flyer fills the page 1:1 with no scaling. */
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  /* Ensure borders/colors (e.g. the dashed cut line) actually print. */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Undo the on-screen responsive scaling so the flyer prints at true A4.
+     (Inline styles set these, so !important is required to win.) */
+  .a4-fit-outer,
+  .a4-fit-inner {
+    width: auto !important;
+    height: auto !important;
+  }
+
+  .a4-fit-inner {
+    transform: none !important;
+  }
+}
