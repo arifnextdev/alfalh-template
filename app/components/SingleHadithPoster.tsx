@@ -254,13 +254,13 @@ export default function SingleHadithPoster({
 
         {/* Bottom row: logo · organization · QR */}
         <footer className="mt-[5mm] flex items-end justify-between gap-[5mm]">
-          <div className="flex w-[34mm] flex-col items-center gap-[1.5mm]">
+          <div className="flex w-[40mm] flex-col items-center gap-[1.5mm]">
             {logo ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={logo}
                 alt={logoAlt}
-                className="max-h-[16mm] w-auto max-w-[32mm] object-contain"
+                className="max-h-[24mm] w-auto max-w-[40mm] object-contain"
               />
             ) : (
               <div
