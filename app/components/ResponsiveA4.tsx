@@ -20,8 +20,14 @@ const A4_H = 1123;
 
 export default function ResponsiveA4({
   children,
+  width = A4_W,
+  height = A4_H,
 }: {
   children: React.ReactNode;
+  /** Natural (1:1) pixel width of the child sheet. Defaults to A4. */
+  width?: number;
+  /** Natural (1:1) pixel height of the child sheet. Defaults to A4. */
+  height?: number;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
@@ -29,24 +35,24 @@ export default function ResponsiveA4({
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const update = () => setScale(Math.min(1, el.clientWidth / A4_W));
+    const update = () => setScale(Math.min(1, el.clientWidth / width));
     const ro = new ResizeObserver(update);
     ro.observe(el);
     update();
     return () => ro.disconnect();
-  }, []);
+  }, [width]);
 
   return (
     <div ref={containerRef} className="w-full">
       {/* Reserves the scaled footprint so following content isn't overlapped. */}
       <div
         className="a4-fit-outer mx-auto"
-        style={{ width: A4_W * scale, height: A4_H * scale }}
+        style={{ width: width * scale, height: height * scale }}
       >
-        {/* Actual A4 box, scaled from its top-left corner. */}
+        {/* Actual sheet box, scaled from its top-left corner. */}
         <div
           className="a4-fit-inner origin-top-left"
-          style={{ width: A4_W, height: A4_H, transform: `scale(${scale})` }}
+          style={{ width, height, transform: `scale(${scale})` }}
         >
           {children}
         </div>

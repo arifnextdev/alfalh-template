@@ -11,17 +11,23 @@ import { toPng } from "html-to-image";
 // A4 at 96 CSS dpi.
 export const A4_PX = { width: 794, height: 1123 } as const;
 
-// ~2382 × 3369px output — crisp for print.
+export interface PxSize {
+  width: number;
+  height: number;
+}
+
+// ~3× the CSS size — crisp for print.
 const DEFAULT_PIXEL_RATIO = 3;
 
 export async function exportA4Png(
   node: HTMLElement,
   filename: string,
   pixelRatio: number = DEFAULT_PIXEL_RATIO,
+  size: PxSize = A4_PX,
 ): Promise<void> {
   const dataUrl = await toPng(node, {
-    width: A4_PX.width,
-    height: A4_PX.height,
+    width: size.width,
+    height: size.height,
     pixelRatio,
     cacheBust: true,
     backgroundColor: "#ffffff",

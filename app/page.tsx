@@ -25,6 +25,15 @@ const TEMPLATES: TemplateCard[] = [
     preview: <PosterPreview />,
   },
   {
+    href: "/single-hadith",
+    name: "একক হাদিস পোস্টার",
+    description:
+      "2:3 portrait poster built around a single hadith as the hero — with a customizable body font size, optional highlighted message, logo, organization & QR. Green / gold / white.",
+    size: "2:3 · 140 × 210mm · Portrait",
+    tags: ["Bangla", "Font size", "PNG export"],
+    preview: <SingleHadithPreview />,
+  },
+  {
     href: "/flyer",
     name: "Side-Fold Flyer",
     description:
@@ -118,6 +127,29 @@ function PosterPreview() {
         <div className="h-3 w-6 rounded-sm bg-gray-300" />
         <div className="h-2 w-10 rounded bg-green-700" />
         <div className="h-5 w-5 rounded-sm border border-green-700" />
+      </div>
+    </div>
+  );
+}
+
+function SingleHadithPreview() {
+  return (
+    <div className="flex h-full w-[110px] flex-col items-center rounded-sm border border-amber-300 bg-white px-3 py-3 shadow-inner">
+      <div className="h-1 w-7 rounded-full bg-amber-500" />
+      <div className="mt-1.5 text-center text-[7px] font-bold leading-tight text-green-800">
+        ইসলামিক উপদেশ
+      </div>
+      <div className="mt-1 h-px w-14 bg-green-700" />
+      <div className="mt-auto mb-auto space-y-1 px-1">
+        <div className="mx-auto h-1.5 w-20 rounded bg-gray-400" />
+        <div className="mx-auto h-1.5 w-16 rounded bg-gray-400" />
+        <div className="mx-auto h-1.5 w-20 rounded bg-gray-400" />
+        <div className="mx-auto mt-1 h-1 w-8 rounded bg-amber-400" />
+      </div>
+      <div className="flex w-full items-end justify-between pt-2">
+        <div className="h-3 w-5 rounded-sm bg-gray-300" />
+        <div className="h-2 w-8 rounded bg-green-700" />
+        <div className="h-4 w-4 rounded-sm border border-green-700" />
       </div>
     </div>
   );
