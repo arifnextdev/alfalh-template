@@ -12,14 +12,14 @@ export default function FlyerExamplePage() {
   return (
     <main className="min-h-screen bg-gray-200 p-3 sm:p-6 print:bg-white print:p-0">
       <FlyerEditor
-        leftText="Grand Opening"
-        rightText="50% Off Today"
-        leftLogo="/next.svg"
-        rightLogo="/vercel.svg"
+        leftText="Al-Falah Foundation"
+        rightText="Al-Falah Foundation"
+        leftLogo="/logo.png"
+        rightLogo="/logo.png"
         leftTextSize={48}
-        rightTextSize={40}
+        rightTextSize={48}
         leftLogoSize={26}
-        rightLogoSize={22}
+        rightLogoSize={26}
         rotation={90}
       />
     </main>

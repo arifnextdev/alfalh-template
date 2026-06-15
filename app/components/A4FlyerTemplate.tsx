@@ -26,6 +26,8 @@
  *   - Print resets (@page, margin removal) live in app/globals.css.
  */
 
+import type { Ref } from "react";
+
 export interface A4FlyerTemplateProps {
   leftText: string;
   rightText: string;
@@ -42,6 +44,8 @@ export interface A4FlyerTemplateProps {
   /** Logo max-height in mm (per half). Default 28. */
   leftLogoSize?: number;
   rightLogoSize?: number;
+  /** Ref to the root A4 <article> (used for PNG export). */
+  ref?: Ref<HTMLElement>;
 }
 
 interface HalfProps {
@@ -116,16 +120,18 @@ export default function A4FlyerTemplate({
   rightText,
   leftLogo,
   rightLogo,
-  leftLogoAlt = "Left logo",
-  rightLogoAlt = "Right logo",
+  leftLogoAlt = "Al-Falah Foundation",
+  rightLogoAlt = "Al-Falah Foundation",
   rotation = 90,
   leftTextSize = 42,
   rightTextSize = 42,
   leftLogoSize = 28,
   rightLogoSize = 28,
+  ref,
 }: A4FlyerTemplateProps) {
   return (
     <article
+      ref={ref}
       // The A4 page itself: exact physical dimensions, no scaling.
       style={{ printColorAdjust: "exact", WebkitPrintColorAdjust: "exact" }}
       className="relative mx-auto flex h-[297mm] w-[210mm] flex-row bg-white text-black shadow-lg print:m-0 print:shadow-none"
