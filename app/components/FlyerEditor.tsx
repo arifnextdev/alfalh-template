@@ -1,13 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { toPng } from "html-to-image";
 import A4FlyerTemplate from "./A4FlyerTemplate";
 import ResponsiveA4 from "./ResponsiveA4";
-
-// A4 at 96 CSS dpi. pixelRatio bumps it to print-quality resolution.
-const A4_PX = { width: 794, height: 1123 };
-const EXPORT_PIXEL_RATIO = 3; // ~2382 × 3369 px PNG
+import { exportA4Png } from "./exportPng";
 
 /**
  * FlyerEditor
@@ -100,20 +96,7 @@ export default function FlyerEditor({
     if (!node || exporting) return;
     setExporting(true);
     try {
-      // Capture at true A4 size regardless of the on-screen responsive scale,
-      // and strip the preview's shadow/transform from the rasterized clone.
-      const dataUrl = await toPng(node, {
-        width: A4_PX.width,
-        height: A4_PX.height,
-        pixelRatio: EXPORT_PIXEL_RATIO,
-        cacheBust: true,
-        backgroundColor: "#ffffff",
-        style: { transform: "none", margin: "0", boxShadow: "none" },
-      });
-      const link = document.createElement("a");
-      link.download = "flyer.png";
-      link.href = dataUrl;
-      link.click();
+      await exportA4Png(node, "flyer.png");
     } catch (err) {
       console.error("PNG export failed", err);
       alert("Sorry — PNG export failed. Please try again.");
