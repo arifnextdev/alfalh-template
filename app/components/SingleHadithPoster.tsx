@@ -31,9 +31,13 @@ export interface SingleHadith {
   fontSize?: number;
 }
 
+export type PosterOrientation = "portrait" | "landscape";
+
 export interface SingleHadithPosterProps {
   title: string;
   hadith: SingleHadith;
+  /** Sheet orientation: portrait 2:3 (140×210mm) or landscape 3:2 (210×140mm). */
+  orientation?: PosterOrientation;
   importantMessage?: string;
   importantLabel?: string;
   footerMessage?: string;
@@ -118,6 +122,7 @@ function Corner({ className }: { className: string }) {
 export default function SingleHadithPoster({
   title,
   hadith,
+  orientation = "portrait",
   importantMessage,
   importantLabel = "গুরুত্বপূর্ণ বার্তা",
   footerMessage,
@@ -128,6 +133,11 @@ export default function SingleHadithPoster({
   qrCode,
   ref,
 }: SingleHadithPosterProps) {
+  const isLandscape = orientation === "landscape";
+  const sizeCls = isLandscape ? "h-[140mm] w-[210mm]" : "h-[210mm] w-[140mm]";
+  // Landscape is shorter — trim vertical padding so header/hero/footer fit.
+  const padCls = isLandscape ? "px-[16mm] py-[10mm]" : "px-[14mm] py-[13mm]";
+
   return (
     <article
       ref={ref}
@@ -137,7 +147,7 @@ export default function SingleHadithPoster({
         fontFamily: "var(--font-bangla), sans-serif",
         color: BLACK,
       }}
-      className="relative h-[210mm] w-[140mm] overflow-hidden bg-white shadow-lg print:shadow-none"
+      className={`relative overflow-hidden bg-white shadow-lg print:shadow-none ${sizeCls}`}
     >
       <PosterBackground />
 
@@ -158,7 +168,7 @@ export default function SingleHadithPoster({
       <Corner className="bottom-[6mm] left-[6mm] -rotate-90" />
 
       {/* ---- Content (print-safe inner padding) ---------------------------- */}
-      <div className="relative flex h-full flex-col px-[14mm] py-[13mm]">
+      <div className={`relative flex h-full flex-col ${padCls}`}>
         {/* Header */}
         <header className="text-center">
           <div

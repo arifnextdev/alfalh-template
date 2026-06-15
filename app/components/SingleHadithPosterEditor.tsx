@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import SingleHadithPoster, {
   DEFAULT_HADITH_FONT_SIZE,
+  type PosterOrientation,
   type SingleHadith,
 } from "./SingleHadithPoster";
 import ResponsiveA4 from "./ResponsiveA4";
@@ -11,15 +12,18 @@ import { exportA4Png } from "./exportPng";
 /**
  * SingleHadithPosterEditor
  * ------------------------
- * Customization surface for <SingleHadithPoster /> (2:3 portrait, one hadith).
+ * Customization surface for <SingleHadithPoster /> (one hadith). Works for both
+ * portrait 2:3 (140×210mm) and landscape 3:2 (210×140mm) via `orientation`.
  * Owns all editable fields and renders a screen-only controls panel beside the
  * live, print-ready preview. Supports Print/PDF and PNG export.
  */
 
-// 140mm × 210mm at 96 CSS dpi.
-const POSTER_PX = { width: 529, height: 794 } as const;
+// At 96 CSS dpi: 140mm = 529px, 210mm = 794px.
+const PORTRAIT_PX = { width: 529, height: 794 } as const;
+const LANDSCAPE_PX = { width: 794, height: 529 } as const;
 
 export interface SingleHadithPosterEditorProps {
+  orientation?: PosterOrientation;
   title?: string;
   hadith?: SingleHadith;
   importantMessage?: string;
@@ -34,6 +38,7 @@ const ACCEPTED_IMAGE_TYPES = "image/png,image/jpeg,image/svg+xml";
 type ImageSlot = "logo" | "qr";
 
 export default function SingleHadithPosterEditor({
+  orientation = "portrait",
   title: initialTitle = "ইসলামিক উপদেশ",
   hadith: initialHadith = { text: "", reference: "" },
   importantMessage: initialImportant = "",
@@ -52,6 +57,8 @@ export default function SingleHadithPosterEditor({
   const [logo, setLogo] = useState(initialLogo);
   const [qrCode, setQrCode] = useState(initialQr);
   const [exporting, setExporting] = useState(false);
+
+  const posterPx = orientation === "landscape" ? LANDSCAPE_PX : PORTRAIT_PX;
 
   const posterRef = useRef<HTMLElement>(null);
   const objectUrls = useRef<Record<ImageSlot, string | null>>({
@@ -97,7 +104,7 @@ export default function SingleHadithPosterEditor({
     if (!node || exporting) return;
     setExporting(true);
     try {
-      await exportA4Png(node, "single-hadith-poster.png", 3, POSTER_PX);
+      await exportA4Png(node, `single-hadith-${orientation}.png`, 3, posterPx);
     } catch (err) {
       console.error("PNG export failed", err);
       alert("দুঃখিত — PNG তৈরি করা যায়নি। আবার চেষ্টা করুন।");
@@ -249,9 +256,10 @@ export default function SingleHadithPosterEditor({
 
       {/* ---- Live preview ----------------------------------------------- */}
       <div className="min-w-0 flex-1">
-        <ResponsiveA4 width={POSTER_PX.width} height={POSTER_PX.height}>
+        <ResponsiveA4 width={posterPx.width} height={posterPx.height}>
           <SingleHadithPoster
             ref={posterRef}
+            orientation={orientation}
             title={title}
             hadith={hadith}
             importantMessage={importantMessage}
