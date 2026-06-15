@@ -26,7 +26,12 @@ const BLACK = "#141414";
 export interface Hadith {
   text: string;
   reference: string;
+  /** Body font size in points. Defaults to 15pt when unset. */
+  fontSize?: number;
 }
+
+/** Default hadith body font size (pt) used when a hadith has none set. */
+export const DEFAULT_HADITH_FONT_SIZE = 15;
 
 export interface IslamicPosterTemplateProps {
   title: string;
@@ -199,8 +204,11 @@ export default function IslamicPosterTemplate({
           {hadiths.map((h, i) => (
             <figure key={i} className="text-center">
               <blockquote
-                className="text-[15pt] font-medium leading-snug"
-                style={{ color: BLACK }}
+                className="font-medium leading-snug"
+                style={{
+                  color: BLACK,
+                  fontSize: `${h.fontSize ?? DEFAULT_HADITH_FONT_SIZE}pt`,
+                }}
               >
                 {h.text}
               </blockquote>

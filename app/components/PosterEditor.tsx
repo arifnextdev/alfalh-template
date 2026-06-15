@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import IslamicPosterTemplate, {
+  DEFAULT_HADITH_FONT_SIZE,
   type Hadith,
 } from "./IslamicPosterTemplate";
 import ResponsiveA4 from "./ResponsiveA4";
@@ -180,6 +181,34 @@ export default function PosterEditor({
                 placeholder="সূত্র (যেমন: সহিহ বুখারি: ৬০৯৮)"
                 className={inputCls}
               />
+              <div className="flex items-center gap-2">
+                <span className="shrink-0 text-xs font-medium text-gray-600">
+                  ফন্ট সাইজ
+                </span>
+                <input
+                  type="range"
+                  min={8}
+                  max={40}
+                  step={0.5}
+                  value={h.fontSize ?? DEFAULT_HADITH_FONT_SIZE}
+                  onChange={(e) =>
+                    updateHadith(i, { fontSize: Number(e.target.value) })
+                  }
+                  className="h-1.5 flex-1 cursor-pointer accent-green-700"
+                />
+                <input
+                  type="number"
+                  min={8}
+                  max={40}
+                  step={0.5}
+                  value={h.fontSize ?? DEFAULT_HADITH_FONT_SIZE}
+                  onChange={(e) =>
+                    updateHadith(i, { fontSize: Number(e.target.value) })
+                  }
+                  className="w-16 rounded-md border border-gray-300 bg-white px-1.5 py-1 text-xs text-gray-900"
+                />
+                <span className="shrink-0 text-xs text-gray-500">pt</span>
+              </div>
             </div>
           ))}
           <button
