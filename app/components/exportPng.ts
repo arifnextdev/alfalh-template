@@ -19,13 +19,17 @@ export interface PxSize {
 // ~3× the CSS size — crisp for print.
 const DEFAULT_PIXEL_RATIO = 3;
 
-export async function exportA4Png(
+/**
+ * Rasterize a fixed-size element to a PNG data URL at print quality, ignoring
+ * any on-screen responsive scale (transform is reset on the clone). The shared
+ * primitive used by both the single-PNG download and the multi-flyer bundlers.
+ */
+export async function nodeToDataUrl(
   node: HTMLElement,
-  filename: string,
-  pixelRatio: number = DEFAULT_PIXEL_RATIO,
   size: PxSize = A4_PX,
-): Promise<void> {
-  const dataUrl = await toPng(node, {
+  pixelRatio: number = DEFAULT_PIXEL_RATIO,
+): Promise<string> {
+  return toPng(node, {
     width: size.width,
     height: size.height,
     pixelRatio,
@@ -33,6 +37,15 @@ export async function exportA4Png(
     backgroundColor: "#ffffff",
     style: { transform: "none", margin: "0", boxShadow: "none" },
   });
+}
+
+export async function exportA4Png(
+  node: HTMLElement,
+  filename: string,
+  pixelRatio: number = DEFAULT_PIXEL_RATIO,
+  size: PxSize = A4_PX,
+): Promise<void> {
+  const dataUrl = await nodeToDataUrl(node, size, pixelRatio);
 
   const link = document.createElement("a");
   link.download = filename.endsWith(".png") ? filename : `${filename}.png`;
